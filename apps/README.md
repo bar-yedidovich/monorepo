@@ -1,7 +1,5 @@
 # apps
 
-**Runnable applications** — frontends, backends, microfrontends, microservices.
+**Runnable applications** — each with its own framework and configuration.
 
-Each subfolder is its own workspace package (own `package.json`, framework, and app-specific config).
-
-`web/` is the first app (Vite + React). Future examples: Next.js, Express, Nest, etc.
+Each subfolder is an independent workspace package with its own `package.json`, dependencies, and app-specific configuration.

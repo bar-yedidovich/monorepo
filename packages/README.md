@@ -1,22 +1,5 @@
 # packages
 
-**Installable workspace libraries** — `"@monorepo/logger": "workspace:*"`.
+**Installable workspace libraries** — publishable modules that can be referenced across the monorepo.
 
-Extend tooling presets, e.g.:
-
-```json
-// tsconfig.json
-{ "extends": "@monorepo/tsconfig/base.json", "include": ["src"] }
-```
-
-```js
-// eslint.config.js
-import { createBaseConfig } from '@monorepo/eslint-config';
-
-export default createBaseConfig({ files: ['**/*.ts'] });
-```
-
-```json
-// package.json
-{ "scripts": { "lint": "eslint ." } }
-```
+Libraries in this folder can extend tooling presets from the `tooling/` folder to maintain consistency across the workspace.

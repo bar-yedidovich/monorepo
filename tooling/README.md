@@ -1,11 +1,5 @@
 # tooling
 
-Shared **presets** for the monorepo (not tied to any app or package).
+Shared **configuration presets** for the monorepo, reusable across all apps and packages.
 
-| Package                     | Presets                                    |
-| --------------------------- | ------------------------------------------ |
-| `@monorepo/tsconfig`        | `base.json`, `node.json`, `react-app.json` |
-| `@monorepo/eslint-config`   | `.` (base), `./react`, `./node`            |
-| `@monorepo/prettier-config` | default export                             |
-
-Children **extend** these; root does not import apps or packages.
+Presets provide consistent configuration for linting, formatting, and type checking throughout the workspace. These are not tied to specific applications and should be extended by other workspace packages.

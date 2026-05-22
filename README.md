@@ -1,17 +1,17 @@
 # monorepo
 
-Learning monorepo for **microfrontends** and **microservices** with different stacks (React, Next, Express, Nest, Tailwind, Vanilla Extract, etc.).
+Monorepo structure for managing multiple applications and shared packages.
 
 **Setup guide:** [SETUP.md](./SETUP.md)
 
 ## Layout
 
-| Folder                     | What goes here                                          |
-| -------------------------- | ------------------------------------------------------- |
-| [`apps/`](./apps/)         | Runnable apps (frontend, backend, any framework)        |
-| [`packages/`](./packages/) | Installable shared libs (`@monorepo/errors`, logger, …) |
-| [`tooling/`](./tooling/)   | Shared config only (ESLint, Prettier, TypeScript)       |
-| [`shared/`](./shared/)     | Shared source imported directly (utils, formats, …)     |
+| Folder                     | What goes here                                   |
+| -------------------------- | ------------------------------------------------ |
+| [`apps/`](./apps/)         | Runnable apps (frontend, backend, any framework) |
+| [`packages/`](./packages/) | Installable shared libraries                     |
+| [`tooling/`](./tooling/)   | Shared configuration presets                     |
+| [`shared/`](./shared/)     | Shared utilities imported directly               |
 
 Workspaces are defined in `pnpm-workspace.yaml` (not `package.json` → `"workspaces"`).
 
@@ -20,7 +20,7 @@ Workspaces are defined in `pnpm-workspace.yaml` (not `package.json` → `"worksp
 | Command             | Description                           |
 | ------------------- | ------------------------------------- |
 | `pnpm install`      | Install deps and set up Husky         |
-| `pnpm dev`          | Web app dev server                    |
+| `pnpm dev`          | Development server                    |
 | `pnpm build`        | Build all workspace packages          |
 | `pnpm lint`         | ESLint (whole repo)                   |
 | `pnpm type-check`   | TypeScript (`tsc -b`) in all packages |
