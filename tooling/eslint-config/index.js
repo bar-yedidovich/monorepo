@@ -2,6 +2,7 @@ import js from '@eslint/js';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import prettierConfig from 'eslint-config-prettier';
+import security from 'eslint-plugin-security';
 import { defineConfig } from 'eslint/config';
 
 /** Shared rule sets for all TypeScript projects (no React). */
@@ -21,6 +22,9 @@ export function createBaseConfig({ files, globals: envGlobals = globals.node }) 
 		languageOptions: {
 			globals: envGlobals,
 		},
-		extends: baseExtends,
+		extends: [
+			...baseExtends,
+			security.configs.recommended, // Security best practices
+		],
 	});
 }
