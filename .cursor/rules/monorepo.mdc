@@ -1,0 +1,21 @@
+---
+description: Monorepo layout, conventions, and quality bar for this repository
+alwaysApply: true
+---
+
+# Monorepo conventions
+
+## Layout
+
+- `tooling/*` — shared presets only (`@monorepo/tsconfig`, `@monorepo/eslint-config`, `@monorepo/prettier-config`). Export base / node / react (and similar) for children to extend. Root must not import apps or packages.
+- `apps/*` — runnable apps. Each app: `eslint.config.js` re-exports a tooling preset (e.g. `@monorepo/eslint-config/react`), `"lint": "eslint ."`, tsconfig extends `@monorepo/tsconfig/*`.
+- `packages/*` — installable workspace libraries (`workspace:*`).
+- `shared/*` — shared source imported directly.
+
+No root `eslint.config.js`. No custom lint-staged discovery scripts. Pre-commit: `lint-staged` (Prettier) + `pnpm -r run lint`.
+
+## Quality bar
+
+Developer-friendly structure, stable library versions, industry-standard patterns. Prefer extending `tooling/` presets over duplicating config. Root orchestrates; children extend standards.
+
+See `SETUP.md`.

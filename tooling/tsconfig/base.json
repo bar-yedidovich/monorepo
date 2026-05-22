@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"target": "ES2023",
+		"lib": ["ES2023"],
+		"module": "ESNext",
+		"skipLibCheck": true,
+
+		"moduleResolution": "bundler",
+		"verbatimModuleSyntax": true,
+		"moduleDetection": "force",
+		"noEmit": true,
+
+		"strict": true,
+		"isolatedModules": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true
+	}
+}

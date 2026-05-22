@@ -1,0 +1,6 @@
+# pnpm workspace members (not package.json "workspaces" — that is npm/Yarn only)
+packages:
+    - 'apps/*'
+    - 'packages/*'
+    - 'tooling/*'
+    - 'shared'

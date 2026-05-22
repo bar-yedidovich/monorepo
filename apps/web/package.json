@@ -1,0 +1,28 @@
+{
+	"name": "web",
+	"private": true,
+	"version": "1.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc -b && vite build",
+		"type-check": "tsc -b",
+		"lint": "eslint .",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"@monorepo/shared": "workspace:*",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0"
+	},
+	"devDependencies": {
+		"@monorepo/eslint-config": "workspace:*",
+		"@monorepo/tsconfig": "workspace:*",
+		"@types/node": "^24.12.2",
+		"@types/react": "^18.2.0",
+		"@types/react-dom": "^18.2.0",
+		"@vitejs/plugin-react": "^6.0.1",
+		"eslint": "^9.39.4",
+		"vite": "^8.0.10"
+	}
+}

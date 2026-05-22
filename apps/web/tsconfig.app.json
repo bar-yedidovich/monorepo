@@ -1,0 +1,7 @@
+{
+	"extends": "@monorepo/tsconfig/react-app.json",
+	"compilerOptions": {
+		"types": ["vite/client"]
+	},
+	"include": ["src"]
+}

@@ -1,0 +1,8 @@
+{
+	"extends": "./base.json",
+	"compilerOptions": {
+		/* Browser / React app (Vite, Next, etc.) */
+		"lib": ["ES2023", "DOM"],
+		"jsx": "react-jsx"
+	}
+}

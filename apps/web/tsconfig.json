@@ -1,0 +1,5 @@
+{
+	"files": [],
+	/* Solution-style config: type-check app + node projects together via `tsc -b` */
+	"references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
+}
