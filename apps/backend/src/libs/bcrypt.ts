@@ -1,4 +1,4 @@
-import config from '../../config/config';
+import config from '../config/config';
 import bcrypt from 'bcrypt';
 
 const saltRounds = 11;

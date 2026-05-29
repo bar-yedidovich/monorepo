@@ -29,11 +29,12 @@ monorepo/
 
 ### TypeScript (`@monorepo/tsconfig`)
 
-| Preset           | Use for                          |
-| ---------------- | -------------------------------- |
-| `base.json`      | Any TS package                   |
-| `node.json`      | `vite.config.ts`, Node backends  |
-| `react-app.json` | Browser React (`lib` DOM, `jsx`) |
+| Preset           | Use for                                     |
+| ---------------- | ------------------------------------------- |
+| `base.json`      | Any TS package (strict defaults, no emit)   |
+| `node.json`      | Node tooling files (`vite.config.ts`, etc.) |
+| `node-app.json`  | Node backends that compile to `dist/`       |
+| `react-app.json` | Browser React (`lib` DOM, `jsx`, Vite)      |
 
 Example (`apps/web/tsconfig.app.json`):
 
@@ -120,8 +121,8 @@ Larger repos often add **Turborepo** or **Nx** to lint only changed packages; th
 ## 6. Adding a new app (`apps/admin`)
 
 1. Create `package.json`, `"lint": "eslint ."`.
-2. `eslint.config.js` — e.g. `export { default } from '@monorepo/eslint-config/react';` (or `/node` for Nest).
-3. `tsconfig` — extend `@monorepo/tsconfig/react-app.json` or `base.json` / `node.json`.
+2. `eslint.config.js` — e.g. `export { default } from '@monorepo/eslint-config/react';` (or `/node` for backends).
+3. `tsconfig` — extend `@monorepo/tsconfig/react-app.json`, `node-app.json`, or `node.json`.
 4. **No root config edits** (only `pnpm --filter admin dev` when you add a script).
 
 Delete `apps/web` → remove folder only; root and tooling unchanged.
@@ -137,3 +138,34 @@ root         → pnpm scripts + prettier + husky (orchestrator)
 ```
 
 When in doubt: extend a preset in `tooling/`, don’t fork rules in the root.
+
+---
+
+## 8. Pinned toolchain (single base stack)
+
+All workspaces share the same runtime and dev-tool versions. **Do not use loose ranges** (`>=20`, `^`, `~`) for core tooling.
+
+| Tool       | Version   | Where enforced                            |
+| ---------- | --------- | ----------------------------------------- |
+| Node.js    | `24.0.0`  | `.node-version`, `engines.node`, `.npmrc` |
+| pnpm       | `10.34.1` | `packageManager`, `engines.pnpm`          |
+| TypeScript | `6.0.3`   | `pnpm-workspace.yaml` → `catalog`         |
+| ESLint     | `9.39.4`  | `catalog`                                 |
+| Prettier   | `3.8.3`   | `catalog`                                 |
+| Vitest     | `4.1.7`   | `catalog`                                 |
+
+### How versions are shared
+
+1. **`pnpm-workspace.yaml` → `catalog`** — single source of truth for dev dependencies.
+2. **`catalog:` protocol** — in each `package.json`: `"typescript": "catalog:"`.
+3. **`.npmrc`** — `engine-strict=true`, `node-version=24.0.0`, `save-exact=true`.
+4. **`.node-version`** — for nvm, fnm, asdf, etc.
+
+To bump a shared version: edit the catalog entry once, then `pnpm install`.
+
+### Adding a new app (minimal per-framework changes)
+
+1. `package.json` — add `"engines"`, use `catalog:` for shared dev deps.
+2. `eslint.config.js` — one line: `export { default } from '@monorepo/eslint-config/react'` (or `/node`).
+3. `tsconfig.json` — `"extends": "@monorepo/tsconfig/react-app.json"` (or `node-app.json` for backends).
+4. Optional: framework-specific `compilerOptions.types` (e.g. `"vite/client"`).

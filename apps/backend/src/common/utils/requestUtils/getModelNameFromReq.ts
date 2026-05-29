@@ -1,7 +1,8 @@
-// TODO BAR: fix relative imports
-import { ModelName } from '../../models';
+import type { ModelName } from '../../models';
 import { Request } from 'express';
 
 export const getModelNameFromReq = (req: Request) => {
-	return req.params.model.toLowerCase() as ModelName;
+	const model = req.params.model;
+	const name = Array.isArray(model) ? model[0] : model;
+	return name.toLowerCase() as ModelName;
 };

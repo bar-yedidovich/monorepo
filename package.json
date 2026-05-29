@@ -16,15 +16,15 @@
 	},
 	"devDependencies": {
 		"@monorepo/prettier-config": "workspace:*",
-		"@types/node": "^25.9.1",
-		"husky": "^9.1.7",
-		"lint-staged": "^17.0.5",
-		"prettier": "^3.8.3",
-		"typescript": "~6.0.3"
+		"@types/node": "catalog:",
+		"husky": "catalog:",
+		"lint-staged": "catalog:",
+		"prettier": "catalog:",
+		"typescript": "catalog:"
 	},
 	"engines": {
-		"node": ">=20",
-		"pnpm": ">=8"
+		"node": "24.0.0",
+		"pnpm": "10.34.1"
 	},
-	"packageManager": "pnpm@8.6.0"
+	"packageManager": "pnpm@10.34.1"
 }

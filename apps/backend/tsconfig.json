@@ -1,20 +1,11 @@
 {
-	// TODO BAR: change to the use the same stable ts and node version
+	"extends": "@monorepo/tsconfig/node-app.json",
 	"compilerOptions": {
-		"target": "ES2020",
-		"lib": ["ES2020"],
 		"module": "ESNext",
 		"moduleResolution": "node",
-		"outDir": "dist",
+		"ignoreDeprecations": "6.0",
 		"rootDir": "src",
-		"declaration": true,
-		"skipLibCheck": true,
-		"esModuleInterop": true,
-		"strict": true,
-		"isolatedModules": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true
+		"outDir": "dist"
 	},
 	"include": ["src"],
 	"exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]

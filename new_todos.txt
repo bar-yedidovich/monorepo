@@ -1,0 +1,177 @@
+# Monorepo review todos
+# Generated from full monorepo review (branch: main, unstaged toolchain + backend WIP)
+
+================================================================================
+CRITICAL / BLOCKING
+================================================================================
+
+[ ] Commit backend into workspace properly
+    - apps/backend/package.json is untracked — backend is not a real workspace member until committed
+    - Commit together with: .node-version, tooling/tsconfig/node-app.json, catalog, lockfile
+
+[ ] Fix repo-wide pnpm type-check failure
+    - Backend still has TS errors; root `pnpm type-check` runs -r and will fail
+    - Fix or temporarily exclude backend from type-check until ready
+
+[ ] Upgrade local Node to match repo pin
+    - Repo requires Node 24.0.0 (.node-version, engines, .npmrc)
+    - Local machine was v22.0.0; pnpm 10.34.1 requires Node >= 22.13
+    - Run: fnm install 24.0.0 && fnm use 24.0.0 (or nvm/asdf equivalent)
+
+[ ] Approve bcrypt native build scripts
+    - pnpm install warned bcrypt build scripts were ignored
+    - Password hashing may fail at runtime until resolved (pnpm approve-builds or policy)
+
+================================================================================
+ALIGNMENT & BEST PRACTICE
+================================================================================
+
+[ ] Fix SETUP.md workspace entry for shared
+    - Section 3 shows 'shared/*' but pnpm-workspace.yaml uses 'shared'
+
+[ ] Fix .cursor/rules/monorepo.mdc
+    - Same shared/* mismatch as SETUP.md
+
+[ ] Update README.md
+    - Mention .node-version, catalog, pinned stack
+    - Fix type-check description: not all packages use tsc -b (shared/backend use tsc --noEmit)
+
+[ ] Consolidate SETUP.md sections 6 and 8
+    - Both describe "adding a new app" — dedupe overlap
+
+[ ] Tighten @monorepo/prettier-config peer dependency
+    - Still uses ">=3" — only loose range left; align to exact 3.8.3 for consistency
+
+[ ] Consider strict-peer-dependencies=true in .npmrc
+    - Currently false; conflicts with strict toolchain philosophy once deps stabilize
+
+[ ] Document Node/pnpm bump policy
+    - Node pinned to 24.0.0 (first LTS release); latest patch is 24.16.0
+    - pnpm pinned to 10.34.1; latest is 11.5.0
+    - Decide: stay on exact pins vs bump to latest LTS patch on schedule
+
+[ ] Move backend legacy TS override to tooling preset
+    - Backend extends node-app.json (NodeNext/ES2024) but overrides moduleResolution: "node"
+    - Create node-app-legacy.json in tooling/ instead of overriding in app tsconfig
+
+[ ] Add typescript to apps/web devDependencies
+    - web runs tsc -b but has no typescript dep — relies on root hoisting
+    - Add: "typescript": "catalog:"
+
+[ ] Remove root @types/node if unused
+    - Root has no TS source; likely unnecessary at root level
+
+[ ] Add tsx/vitest to catalog (optional)
+    - Backend pins tsx outside catalog; consider catalog entries for reuse
+
+[ ] Align backend package naming
+    - shared uses @monorepo/shared; backend uses "backend" (no scope)
+    - Consider @monorepo/backend for consistency
+
+[ ] Fix root dev script vs backend README
+    - Root `pnpm dev` only runs web
+    - Backend README says `pnpm dev` — misleading from repo root
+    - Add `pnpm --filter backend dev` to root or fix README
+
+[ ] Commit all unstaged toolchain changes as one coherent changeset
+    - .node-version, .npmrc, catalog, package.json files, tooling presets, lockfile
+
+================================================================================
+BACKEND CODE — LOGIC BUGS
+================================================================================
+
+[ ] Fix register() null order in auth.logic.ts
+    - createTokensForUser / saveRefreshToken called with newUser._id before if (newUser)
+    - Will throw if createUser returns null
+
+[ ] Validate config.ts env values
+    - All values are string | undefined
+    - Used as JWT secrets without validation → TS errors + runtime risk
+    - Fail fast at startup if required env vars missing
+
+[ ] Fix saveRefreshToken return handling in auth.services.ts
+    - updateModel returns UpdateWriteOpResult, not an array
+    - [0] indexing is wrong
+
+[ ] Fix remaining backend type-check errors
+    - JWT sign overload / expiresIn typing
+    - verifyToken middleware err is unknown
+    - Other strict-mode issues from copied project
+
+================================================================================
+BACKEND CODE — DRY / CLARITY
+================================================================================
+
+[ ] Remove comparePasswords wrapper in auth.services.ts
+    - Thin wrapper over verifyPassword; call verifyPassword directly in auth.logic.ts
+
+[ ] Fix UserTokenModal typo in common/models/index.ts
+    - Should be UserTokenModel
+
+[ ] Remove commented dead import in auth.logic.ts
+    - // extractUserData,
+
+[ ] Guard getModelNameFromReq when param missing
+    - name.toLowerCase() throws if model param is undefined
+
+[ ] (Later) Refactor generic handlers
+    - Six nearly identical try/catch/getModelName blocks — candidate for HOF factory
+
+================================================================================
+BACKEND CODE — DEPS / REDUNDANCY
+================================================================================
+
+[ ] Review body-parser with Express 5
+    - Express 5 has built-in express.json() / urlencoded
+    - May be double-parsing with body-parser
+
+[ ] Move mongodb to devDependency or drop
+    - Only used for type imports in generic.data.ts
+    - Import types from mongoose instead if possible
+
+================================================================================
+BACKEND — EXISTING TODOS (from TODOS.txt)
+================================================================================
+
+[ ] Migrate backend imports to NodeNext + .js extensions
+    - Drop moduleResolution: "node" override after migration
+
+[ ] Make sure the project runs — fix remaining ts problems
+
+[ ] Make everything possible in config (env-driven settings)
+
+[ ] Verify admin in generic routes
+
+[ ] Go through all files and check organize imports (alt shift o)
+
+[ ] Finish all test types
+
+[ ] k8s again — using dockerhub image (code is commented)
+
+[ ] Create environments folder with env files
+    - index.ts TODO: environments/.env.${NODE_ENV}
+
+[ ] Add CORS URLs from config
+    - useMiddlewaresBeforeRoutes.ts TODO
+
+[ ] Customize auth errors by your needs
+    - auth.logic.ts TODO
+
+[ ] Map model names from model files
+    - common/models/index.ts TODO
+
+[ ] Check extractReturnUserData __v deletion
+    - auth.services.ts TODO
+
+================================================================================
+WHAT'S ALREADY GOOD (no action needed)
+================================================================================
+
+[x] pnpm catalog as single source of truth for shared dev deps
+[x] Explicit engines (24.0.0 / 10.34.1) instead of >=20 / >=8
+[x] .npmrc with engine-strict, node-version, save-exact
+[x] Preset split: base → node / node-app / react-app
+[x] eslint-plugin-security in dependencies (not devDependencies)
+[x] Config path fixes in bcrypt.ts / mongoose.ts
+[x] getModelNameFromReq string | string[] handling
+[x] web and shared type-check cleanly with new stack

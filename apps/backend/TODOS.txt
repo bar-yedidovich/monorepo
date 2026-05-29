@@ -1,4 +1,5 @@
-- TODOs - -// TODO BAR: change to the use the same stable ts and node version
+- TODOs - [done] stable ts/node via @monorepo/tsconfig + engines
+- Migrate backend imports to NodeNext + `.js` extensions (drop moduleResolution override)
 - Make sure the project runs. fix ts problems
 - make everything possible in config
 - verify admin in generic
