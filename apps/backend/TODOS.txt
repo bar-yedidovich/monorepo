@@ -1,0 +1,7 @@
+- TODOs - -// TODO BAR: change to the use the same stable ts and node version
+- Make sure the project runs. fix ts problems
+- make everything possible in config
+- verify admin in generic
+- go through all files and check alt shift o
+- finish all test types
+- k8s again - using the dockerhub image (code is commented)

@@ -1,7 +1,6 @@
 {
 	"extends": "./base.json",
 	"compilerOptions": {
-		/* Node tooling (e.g. vite.config.ts) */
 		"types": ["node"]
 	}
 }
